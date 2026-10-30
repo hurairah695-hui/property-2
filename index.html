@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PropDeal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F6F9;--panel:#fff;--ink:#12263F;--muted:#5A6B80;--line:#D9E0E9;--brand:#1D3F6B;--brand-ink:#fff;--accent:#C79A3B;--err:#B3261E;--ok:#1E7A4C;--focus:#2F6FDE;
+--shadow:0 1px 2px rgba(18,38,63,.06),0 10px 28px rgba(18,38,63,.09);
+--display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0D1521;--panel:#142033;--ink:#E8EDF4;--muted:#9DACBF;--line:#2A3A51;--brand:#D2A94F;--brand-ink:#12263F;--err:#FF8F86;--ok:#6FD3A1;--focus:#7FAAF5;--shadow:0 10px 28px rgba(0,0,0,.4);color-scheme:dark}}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em}
+.brand svg{width:28px;height:28px}
+.btn{height:44px;padding:0 20px;border:0;border-radius:99px;background:var(--brand);color:var(--brand-ink);font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{opacity:.92}.btn[disabled]{opacity:.6;cursor:progress}
+.ghost{height:42px;padding:0 16px;border:1px solid var(--line);border-radius:99px;background:none;color:var(--ink);font-weight:500}
+.ghost:hover{border-color:var(--muted)}
+
+/* login */
+.auth{min-height:100dvh;display:grid;place-items:center;padding:24px;background:radial-gradient(800px 380px at 10% 0%,color-mix(in srgb,var(--accent) 24%,transparent),transparent),radial-gradient(800px 420px at 100% 100%,color-mix(in srgb,var(--brand) 18%,transparent),transparent),var(--bg)}
+.acard{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:32px;box-shadow:var(--shadow)}
+.acard h1{font-family:var(--display);font-size:30px;letter-spacing:-.02em;margin:22px 0 4px}
+.lead{margin:0 0 22px;color:var(--muted)}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:18px}
+.roles label{position:relative;text-align:center;padding:10px 6px;font-size:14px;font-weight:500;cursor:pointer;color:var(--muted);border-left:1px solid var(--line)}
+.roles label:first-child{border-left:0}
+.roles input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.roles label:has(input:checked){background:var(--brand);color:var(--brand-ink)}
+.roles label:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:-3px}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.field input[type=email],.field input[type=password],.field input[type=text]{width:100%;height:46px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit}
+.ctl{position:relative}.ctl input{padding-right:70px!important}
+.show{position:absolute;right:6px;top:6px;height:34px;padding:0 10px;border:0;background:none;color:var(--muted);font-size:13px;font-weight:600;border-radius:8px}
+.msg{display:none;color:var(--err);font-size:13px;margin-top:5px}
+.field.bad input{border-color:var(--err)}.field.bad .msg{display:block}
+.remember{display:flex;align-items:center;gap:10px;font-size:14px;margin:0 0 18px;cursor:pointer}
+.remember input{width:18px;height:18px;accent-color:var(--brand)}
+.acard .btn{width:100%;height:48px;font-size:16px}
+#ls{min-height:22px;margin:12px 0 0;font-size:14px;color:var(--err)}
+.demo{margin-top:18px;padding:14px;border-radius:14px;background:var(--bg);font-size:13px;color:var(--muted)}
+.demo b{color:var(--ink)}
+.demo .row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.demo button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:600}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:14px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.search{flex:1;min-width:200px;position:relative;max-width:460px;margin-left:12px}
+.search svg{position:absolute;left:14px;top:12px;width:18px;height:18px;color:var(--muted)}
+.search input{width:100%;height:42px;padding:0 16px 0 40px;border:1px solid var(--line);border-radius:99px;background:var(--bg);color:var(--ink);font:inherit}
+.sp{flex:1}
+.user{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600}
+.av{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#12263F;display:grid;place-items:center;font-weight:700}
+.rb{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--bg);border-radius:99px;padding:2px 9px;color:var(--muted)}
+
+/* hero + grid */
+.hero{padding:44px 0 8px}
+.hero h1{font-family:var(--display);font-size:clamp(30px,4.6vw,50px);line-height:1.08;letter-spacing:-.025em;margin:0 0 10px;max-width:18ch}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,color-mix(in srgb,var(--accent) 55%,transparent) 62%)}
+.hero p{margin:0 0 22px;color:var(--muted);max-width:54ch}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{height:38px;padding:0 16px;border:1px solid var(--line);border-radius:99px;background:var(--panel);color:var(--ink);font-weight:500;font-size:14px}
+.chip:hover{border-color:var(--muted)}
+.chip[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.count{margin:18px 0 14px;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;padding-bottom:64px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);transition:transform .2s}
+.card:hover{transform:translateY(-4px)}
+.ph{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--line)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.card:hover .ph img{transform:scale(1.05)}
+.tag{position:absolute;left:12px;top:12px;padding:4px 12px;border-radius:99px;background:var(--panel);font-size:12px;font-weight:600}
+.heart{position:absolute;right:12px;top:12px;width:40px;height:40px;border-radius:50%;border:0;background:var(--panel);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s}
+.heart:hover{transform:scale(1.1)}
+.heart svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2;transition:fill .15s,stroke .15s}
+.heart.on svg{fill:#E5484D;stroke:#E5484D;animation:pop .35s}
+@keyframes pop{40%{transform:scale(1.35)}}
+.bd{padding:16px 18px 18px}
+.pr{font-family:var(--display);font-size:22px;font-weight:700}
+.bd h3{margin:2px 0 4px;font-size:16px;font-weight:600}
+.loc{margin:0 0 8px;color:var(--muted);font-size:14px}
+.ds{margin:0 0 12px;color:var(--muted);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:500}
+.meta span{background:var(--bg);border-radius:8px;padding:3px 10px}
+.del{margin-top:12px;border:0;background:none;color:var(--err);font-size:13px;font-weight:600;padding:0}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);border:1px dashed var(--line);border-radius:18px}
+
+/* modal + toast */
+dialog{border:0;border-radius:20px;padding:0;width:min(580px,calc(100% - 24px));background:var(--panel);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,18,30,.55);backdrop-filter:blur(3px)}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:20px 24px 4px}
+.dh h2{margin:0;font-family:var(--display);font-size:24px}
+.x{border:0;background:none;font-size:28px;line-height:1;color:var(--muted)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:12px 24px}
+.fg label{display:block;font-size:13px;font-weight:600}
+.full{grid-column:1/-1}
+.fg input,.fg select,.fg textarea{display:block;width:100%;margin-top:5px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-weight:400}
+.fg small{color:var(--muted);font-weight:400}
+#pv{width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-top:8px}
+.df{display:flex;justify-content:flex-end;gap:10px;padding:8px 24px 22px}
+#fe{margin:0;padding:0 24px;color:var(--err);font-size:14px;min-height:20px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,80px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:99px;font-weight:500;transition:transform .3s;z-index:50}
+.toast.show{transform:translate(-50%,0)}
+@media(max-width:560px){.fg{grid-template-columns:1fr}.search{order:5;max-width:none;margin:0;flex-basis:100%}.user span,.rb{display:none}.acard{padding:24px 20px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section class="auth" id="vLogin">
+  <div class="acard">
+    <div class="brand"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="5" y="4" width="22" height="24" rx="2" stroke="#C79A3B" stroke-width="2.5"/><path d="M11 10h3M18 10h3M11 15h3M18 15h3M13 28v-6h6v6" stroke="#C79A3B" stroke-width="2.5" stroke-linecap="round"/></svg>PropDeal</div>
+    <h1>Sign in</h1>
+    <p class="lead">Browse and list properties. Choose your role to continue.</p>
+    <form id="lf" novalidate>
+      <div class="roles" role="radiogroup" aria-label="Sign in as">
+        <label><input type="radio" name="role" value="seller" checked>Seller</label>
+        <label><input type="radio" name="role" value="buyer">Buyer</label>
+        <label><input type="radio" name="role" value="admin">Admin</label>
+      </div>
+      <div class="field" id="fe1"><label for="em">Email</label><input id="em" type="email" autocomplete="username" placeholder="you@example.com"><div class="msg">Enter a valid email address.</div></div>
+      <div class="field" id="fp1"><label for="pw">Password</label>
+        <div class="ctl"><input id="pw" type="password" autocomplete="current-password"><button type="button" class="show" id="sh" aria-pressed="false">Show</button></div>
+        <div class="msg">Password must be at least 8 characters.</div></div>
+      <label class="remember"><input type="checkbox" id="rem"> Keep me signed in on this device</label>
+      <button class="btn" id="lb" type="submit">Sign in</button>
+      <p id="ls" role="alert"></p>
+    </form>
+    <div class="demo"><b>Demo accounts</b> (no server needed)
+      <div class="row"><button type="button" data-r="seller">Use Seller</button><button type="button" data-r="buyer">Use Buyer</button><button type="button" data-r="admin">Use Admin</button></div></div>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="vApp" hidden>
+<header class="nav"><div class="wrap">
+  <div class="brand"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="5" y="4" width="22" height="24" rx="2" stroke="#C79A3B" stroke-width="2.5"/><path d="M11 10h3M18 10h3M11 15h3M18 15h3M13 28v-6h6v6" stroke="#C79A3B" stroke-width="2.5" stroke-linecap="round"/></svg>PropDeal</div>
+  <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Search by title or city" aria-label="Search properties"></label>
+  <div class="sp"></div>
+  <button class="btn" id="add" style="height:42px"><span aria-hidden="true">＋</span> Add property</button>
+  <div class="user"><div class="av" id="av">·</div><span id="who"></span><span class="rb" id="rl"></span></div>
+  <button class="ghost" id="out">Log out</button>
+</div></header>
+<section class="hero"><div class="wrap">
+  <h1>Find your next <em>deal</em></h1>
+  <p id="sub"></p>
+  <div class="chips" id="chips" role="group" aria-label="Filter by type"></div>
+  <div class="count" id="count" aria-live="polite"></div>
+</div></section>
+<main class="wrap"><div class="grid" id="grid"></div></main>
+<footer class="wrap" style="padding:0 20px 40px;color:var(--muted);font-size:13px">Demo listings. Photos from <a href="https://unsplash.com" target="_blank" rel="noopener" style="color:inherit">Unsplash</a>.</footer>
+
+<dialog id="dlg">
+  <form id="pf" novalidate>
+    <div class="dh"><h2>Add a property</h2><button type="button" class="x" id="x" aria-label="Close">×</button></div>
+    <div class="fg">
+      <label class="full">Title<input name="title" maxlength="150" placeholder="e.g. 5 Marla house near the park"></label>
+      <label>Type<select name="type"><option value="house">House</option><option value="apartment">Apartment</option><option value="shop">Shop</option><option value="plot">Plot</option></select></label>
+      <label>Price (PKR)<input name="price" type="number" min="1" placeholder="e.g. 15000000"></label>
+      <label>City<input name="city" maxlength="80" placeholder="e.g. Islamabad"></label>
+      <label>Size<input name="area_size" maxlength="40" placeholder="e.g. 5 Marla"></label>
+      <label class="rm">Bedrooms<input name="beds" type="number" min="0" max="50"></label>
+      <label class="rm">Bathrooms<input name="baths" type="number" min="0" max="50"></label>
+      <label class="full">Description<textarea name="description" rows="3" maxlength="2000"></textarea></label>
+      <div class="full"><label>Photo (optional)<input type="file" id="ph" accept="image/jpeg,image/png,image/webp"></label>
+        <img id="pv" alt="Photo preview" hidden>
+        <small>No photo? We’ll show an illustration for the property type.</small></div>
+    </div>
+    <p id="fe" role="alert"></p>
+    <div class="df"><button type="button" class="ghost" id="cancel">Cancel</button><button class="btn" id="save">Publish</button></div>
+  </form>
+</dialog>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const LABEL={house:'House',apartment:'Apartment',shop:'Shop',plot:'Plot'};
+const HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.7 7.8 3.6 4.5 7 4.5c2 0 3.5 1.1 5 3 1.5-1.9 3-3 5-3 3.4 0 5.3 3.3 4.2 6.6-1.7 4.8-9.2 9.4-9.2 9.4z" stroke-linejoin="round"/></svg>';
+const USERS={'admin@example.com':['Admin@1234','admin','Demo Admin'],'buyer@example.com':['Buyer@1234','buyer','Demo Buyer'],'seller@example.com':['Seller@1234','seller','Demo Seller']};
+const U=id=>'https://images.unsplash.com/photo-'+id+'?auto=format&fit=crop&w=900&q=70';
+const SEED=[
+ ['Modern 10 Marla House, Bahria Town','house',38500000,'Rawalpindi','10 Marla',5,4,'Double-storey home with a lawn, modular kitchen and covered parking.',U('1613977257363-707ba9348227')],
+ ['Corner Shop on Main Boulevard','shop',12500000,'Lahore','450 sq ft',null,null,'Ground-floor corner shop with high footfall and a wide frontage.',U('1764395294670-22fc367f3119')],
+ ['Residential Plot, DHA Phase 2','plot',9500000,'Islamabad','1 Kanal',null,null,'Ready-to-build plot on a 60 ft road. All utilities nearby.',U('1747854805840-9be7d5e360e6')],
+ ['2-Bed Apartment, F-11 Markaz','apartment',21000000,'Islamabad','1,150 sq ft',2,2,'Bright apartment with a balcony, lift and 24/7 security.',U('1525953776754-6c4b7ee655ab')],
+ ['5 Marla Family Home, Johar Town','house',17500000,'Lahore','5 Marla',3,3,'Neat family home in a quiet, gated society close to schools.',U('1513584684374-8bab748fbf90')],
+ ['Commercial Plot near Motorway','plot',28000000,'Rawalpindi','8 Marla',null,null,'Corner commercial plot with easy motorway access.',U('1587745890135-20db8c79b027')],
+ ['Luxury 1 Kanal Villa, F-7','house',120000000,'Islamabad','1 Kanal',6,6,'Spacious villa with a home theatre, garden and servant quarters.',U('1600596542815-ffad4c1539a9')],
+ ['Studio Apartment, Gulberg','apartment',9800000,'Lahore','520 sq ft',1,1,'Compact, fully furnished studio. Great for rental income.',U('1512845296467-183ccf124347')],
+ ['Shop in Saddar Bazaar','shop',7200000,'Rawalpindi','220 sq ft',null,null,'Busy bazaar location, ideal for clothing or electronics.',U('1772331274672-a5eecb4c6498')],
+ ['Corner Plot, Gulberg Greens','plot',6500000,'Islamabad','5 Marla',null,null,'Park-facing corner plot in a developed block.',U('1769258958976-8852440011b8')],
+ ['Modern Home with Front Lawn, Bahria Enclave','house',28500000,'Islamabad','8 Marla',4,4,'Contemporary design, large front lawn and a double-height lounge.',U('1706808849777-96e0d7be3bb7')],
+ ['Apartment with Balcony, DHA','apartment',15500000,'Lahore','950 sq ft',2,2,'Modern apartment with a balcony, parking and gated security.',U('1764722870653-e59e737d1d30')]];
+/* Seed listings live in code (always shown). Listings added by sellers are stored in the browser. */
+const SEEDP=SEED.map((s,i)=>({id:i+1,owner:'seller@example.com',title:s[0],type:s[1],price:s[2],city:s[3],area_size:s[4],beds:s[5],baths:s[6],description:s[7],image:s[8]}));
+function loadProps(){const gone=S.get('pd2_deleted',[]);return [...S.get('pd2_props',[]),...SEEDP.filter(p=>!gone.includes(p.id))]}
+
+/* storage (safe if blocked) */
+const S={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch{return false}}};
+let me=null,props=[],favs=[],type='all',q='',favOnly=false,photo=null,tt;
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function money(n){n=+n;const t=v=>v.toFixed(2).replace(/\.?0+$/,'');
+  if(n>=1e7)return 'PKR '+t(n/1e7)+' Crore';if(n>=1e5)return 'PKR '+t(n/1e5)+' Lakh';return 'PKR '+n.toLocaleString('en-PK')}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600)}
+
+/* illustrations for listings without a photo */
+const PAL=[['#BFE3F5','#F4F9FC','#F2E8D5','#B5533C','#8CC084'],['#FAD9C1','#FDF3E8','#E6EEF5','#2F5D8A','#9CCB86'],['#CDE7E0','#F3FAF7','#F7EBD0','#7A4B8C','#7DB77A'],['#D8DDF5','#F6F7FD','#EFE3DA','#2E6F66','#A5CF8A']];
+function art(t,id){
+  const [s1,s2,w,r,g]=PAL[id%4];let b='';
+  if(t==='house')b=`<rect x="112" y="140" width="176" height="92" fill="${w}"/><polygon points="96,144 200,68 304,144" fill="${r}"/><rect x="252" y="82" width="20" height="40" fill="${r}" opacity=".8"/><rect x="186" y="176" width="28" height="56" fill="#34495E"/><rect x="130" y="162" width="42" height="34" fill="#CFE8F6"/><rect x="228" y="162" width="42" height="34" fill="#CFE8F6"/><rect x="334" y="196" width="8" height="40" fill="#6B4A32"/><circle cx="338" cy="186" r="28" fill="#5FA36A"/>`;
+  else if(t==='apartment'){let k='';for(let y=0;y<5;y++)for(let x=0;x<3;x++)k+=`<rect x="${148+x*38}" y="${58+y*32}" width="22" height="20" fill="${(x+y)%3?'#CFE8F6':'#FFE08A'}"/>`;
+    b=`<rect x="64" y="120" width="64" height="112" fill="${r}" opacity=".75"/><rect x="132" y="38" width="136" height="194" fill="${w}"/>${k}<rect x="184" y="196" width="32" height="36" fill="#34495E"/><rect x="272" y="150" width="64" height="82" fill="${r}" opacity=".75"/>`}
+  else if(t==='shop'){let a='';for(let i=0;i<8;i++)a+=`<rect x="${70+i*32.5}" y="116" width="32.5" height="34" fill="${i%2?'#FFFFFF':r}"/>`;
+    b=`<rect x="70" y="116" width="260" height="116" fill="${w}"/>${a}<rect x="96" y="164" width="130" height="68" fill="#CFE8F6"/><rect x="246" y="170" width="52" height="62" fill="#34495E"/><rect x="150" y="82" width="100" height="26" rx="4" fill="${r}"/><text x="200" y="101" font-family="sans-serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">SHOP</text>`}
+  else b=`<polygon points="30,238 370,238 336,176 64,176" fill="#7FB36F"/><polygon points="30,238 370,238 336,176 64,176" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="8 6"/><circle cx="30" cy="238" r="5" fill="${r}"/><circle cx="370" cy="238" r="5" fill="${r}"/><circle cx="336" cy="176" r="5" fill="${r}"/><circle cx="64" cy="176" r="5" fill="${r}"/><rect x="196" y="122" width="6" height="84" fill="#6B4A32"/><rect x="146" y="98" width="106" height="38" rx="5" fill="${r}"/><text x="199" y="123" font-family="sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">FOR SALE</text><circle cx="42" cy="196" r="20" fill="#5FA36A"/><circle cx="364" cy="198" r="16" fill="#5FA36A"/>`;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s1}"/><stop offset="1" stop-color="${s2}"/></linearGradient></defs><rect width="400" height="300" fill="url(#a)"/><circle cx="335" cy="55" r="26" fill="#FFE9A8"/><rect y="232" width="400" height="68" fill="${g}"/>${b}</svg>`;
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)}
+
+/* ---------- login ---------- */
+const lf=$('#lf'),em=$('#em'),pw=$('#pw');
+$('#sh').addEventListener('click',function(){const s=pw.type==='text';pw.type=s?'password':'text';this.textContent=s?'Show':'Hide';this.setAttribute('aria-pressed',String(!s))});
+document.querySelectorAll('.demo button').forEach(b=>b.addEventListener('click',()=>{
+  const r=b.dataset.r,e=r+'@example.com';em.value=e;pw.value=USERS[e][0];lf.role.value=r;$('#ls').textContent='';
+  $('#fe1').classList.remove('bad');$('#fp1').classList.remove('bad')}));
+lf.addEventListener('submit',e=>{
+  e.preventDefault();const ls=$('#ls');ls.textContent='';
+  const okE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value.trim()),okP=pw.value.length>=8;
+  $('#fe1').classList.toggle('bad',!okE);$('#fp1').classList.toggle('bad',!okP);
+  if(!okE){em.focus();return}if(!okP){pw.focus();return}
+  const b=$('#lb');b.disabled=true;b.textContent='Signing in…';
+  setTimeout(()=>{
+    b.disabled=false;b.textContent='Sign in';
+    const email=em.value.trim().toLowerCase(),u=USERS[email];
+    if(!u||u[0]!==pw.value||u[1]!==lf.role.value){ls.textContent='Email, password or role is incorrect.';return}
+    me={email,role:u[1],name:u[2]};
+    const json=JSON.stringify(me);
+    try{if($('#rem').checked){localStorage.setItem('pd_user',json)}else{sessionStorage.setItem('pd_user',json)}}catch{}
+    pw.value='';startApp();
+  },450)});
+
+/* ---------- app ---------- */
+function startApp(){
+  props=loadProps();
+  favs=S.get('pd2_favs_'+me.email,[]);
+  $('#vLogin').hidden=true;$('#vApp').hidden=false;window.scrollTo(0,0);
+  $('#who').textContent=me.name;$('#rl').textContent=me.role;$('#av').textContent=me.name[0];
+  const seller=me.role==='seller';$('#add').hidden=!seller;
+  $('#sub').textContent=seller?'Add your houses, apartments, shops and plots, and tap the heart to save the ones you like.':'Browse listings and tap the heart to save the ones you like.';
+  type='all';favOnly=false;q='';$('#q').value='';chips();render()}
+
+function card(p){
+  const mine=me.role==='seller'&&p.owner===me.email,fav=favs.includes(p.id);
+  return `<article class="card"><div class="ph"><img src="${p.image||art(p.type,p.id)}" data-t="${p.type}" data-id="${p.id}" alt="${esc(p.title)}" loading="lazy">
+    <span class="tag">${LABEL[p.type]}</span>
+    <button class="heart${fav?' on':''}" data-id="${p.id}" aria-pressed="${fav}" aria-label="Save to favourites">${HEART}</button></div>
+    <div class="bd"><div class="pr">${money(p.price)}</div><h3>${esc(p.title)}</h3><p class="loc">${esc(p.city)}</p>
+    ${p.description?`<p class="ds">${esc(p.description)}</p>`:''}
+    <div class="meta">${p.area_size?`<span>${esc(p.area_size)}</span>`:''}${p.beds!=null?`<span>${p.beds} beds</span>`:''}${p.baths!=null?`<span>${p.baths} baths</span>`:''}</div>
+    ${mine?`<button class="del" data-del="${p.id}">Delete listing</button>`:''}</div></article>`}
+function render(){
+  const list=props.filter(p=>(type==='all'||p.type===type)&&(!favOnly||favs.includes(p.id))&&(!q||(p.title+' '+p.city).toLowerCase().includes(q)));
+  $('#count').textContent=list.length+(list.length===1?' property':' properties');
+  $('#grid').innerHTML=list.length?list.map(card).join(''):'<div class="empty">Nothing here yet. Try another filter'+(me.role==='seller'?', or add a new property.':'.')+'</div>'}
+function chips(){
+  $('#chips').innerHTML=[['all','All'],['house','Houses'],['apartment','Apartments'],['shop','Shops'],['plot','Plots'],['fav','♥ Favourites']]
+    .map(([k,l])=>`<button class="chip" data-k="${k}" aria-pressed="${k==='all'}">${l}</button>`).join('')}
+$('#chips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c)return;const k=c.dataset.k;
+  if(k==='fav'){favOnly=!favOnly;c.setAttribute('aria-pressed',favOnly)}
+  else{type=k;document.querySelectorAll('.chip:not([data-k=fav])').forEach(x=>x.setAttribute('aria-pressed',x===c))}
+  render()});
+$('#q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render()});
+$('#grid').addEventListener('click',e=>{
+  const h=e.target.closest('.heart');
+  if(h){const id=+h.dataset.id,on=!favs.includes(id);favs=on?[...favs,id]:favs.filter(x=>x!==id);S.set('pd2_favs_'+me.email,favs);
+    h.classList.toggle('on',on);h.setAttribute('aria-pressed',on);if(favOnly)render();return}
+  const d=e.target.closest('[data-del]');
+  if(d&&confirm('Delete this listing?')){const id=+d.dataset.del;
+    if(id<=SEEDP.length){S.set('pd2_deleted',[...S.get('pd2_deleted',[]),id])}else{S.set('pd2_props',S.get('pd2_props',[]).filter(x=>x.id!==id))}
+    props=loadProps();render();toast('Listing deleted')}});
+
+/* add property (sellers) */
+const dlg=$('#dlg'),pf=$('#pf');
+function rooms(){const on=['house','apartment'].includes(pf.type.value);document.querySelectorAll('.rm').forEach(l=>l.hidden=!on)}
+pf.type.addEventListener('change',rooms);
+$('#add').addEventListener('click',()=>{rooms();$('#fe').textContent='';dlg.showModal()});
+['#x','#cancel'].forEach(s=>$(s).addEventListener('click',()=>dlg.close()));
+function shrink(file){return new Promise((ok,no)=>{const im=new Image(),u=URL.createObjectURL(file);
+  im.onload=()=>{const s=Math.min(1,800/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;
+    c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.8))};
+  im.onerror=no;im.src=u})}
+$('#ph').addEventListener('change',async e=>{
+  const f=e.target.files[0];photo=null;$('#pv').hidden=true;if(!f)return;
+  try{photo=await shrink(f);$('#pv').src=photo;$('#pv').hidden=false}catch{$('#fe').textContent='Could not read that image.'}});
+pf.addEventListener('submit',e=>{
+  e.preventDefault();$('#fe').textContent='';
+  const b=Object.fromEntries(new FormData(pf)),price=Math.round(+b.price);
+  if(!b.title.trim()||!b.city.trim()||!(price>0)){$('#fe').textContent='Please fill in title, city and a valid price.';return}
+  const rm=['house','apartment'].includes(b.type),n=v=>v===''||v==null?null:Math.max(0,Math.min(50,parseInt(v,10)||0));
+  const p={id:Date.now(),owner:me.email,title:b.title.trim(),type:b.type,price,city:b.city.trim(),
+    area_size:b.area_size.trim()||null,beds:rm?n(b.beds):null,baths:rm?n(b.baths):null,description:b.description.trim()||null,image:photo};
+  if(!S.set('pd2_props',[p,...S.get('pd2_props',[])])){$('#fe').textContent='Browser storage is full. Try a smaller photo or none.';return}
+  props=loadProps();dlg.close();pf.reset();photo=null;$('#pv').hidden=true;render();toast('Property published')});
+
+/* if a photo cannot load (offline, blocked), show the built-in illustration instead */
+document.addEventListener('error',e=>{const i=e.target;if(i&&i.tagName==='IMG'&&i.dataset.t&&!i.dataset.fb){i.dataset.fb='1';i.src=art(i.dataset.t,+i.dataset.id)}},true);
+
+/* logout + restore session */
+$('#out').addEventListener('click',()=>{
+  try{localStorage.removeItem('pd_user');sessionStorage.removeItem('pd_user')}catch{}
+  me=null;$('#vApp').hidden=true;$('#vLogin').hidden=false;lf.reset();window.scrollTo(0,0)});
+(function(){let u=null;try{u=JSON.parse(sessionStorage.getItem('pd_user')||localStorage.getItem('pd_user')||'null')}catch{}
+  if(u&&USERS[u.email]&&USERS[u.email][1]===u.role){me=u;startApp()}})();
+</script>
+</body>
+</html>

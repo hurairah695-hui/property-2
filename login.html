@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · PropDeal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F6F9;--panel:#fff;--ink:#12263F;--muted:#5A6B80;--line:#D9E0E9;--brand:#1D3F6B;--brand-ink:#fff;--accent:#C79A3B;--err:#B3261E;--ok:#1E7A4C;--focus:#2F6FDE;
+--shadow:0 1px 2px rgba(18,38,63,.06),0 10px 28px rgba(18,38,63,.09);
+--display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0D1521;--panel:#142033;--ink:#E8EDF4;--muted:#9DACBF;--line:#2A3A51;--brand:#D2A94F;--brand-ink:#12263F;--err:#FF8F86;--ok:#6FD3A1;--focus:#7FAAF5;--shadow:0 10px 28px rgba(0,0,0,.4);color-scheme:dark}}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em}
+.brand svg{width:28px;height:28px}
+.btn{height:44px;padding:0 20px;border:0;border-radius:99px;background:var(--brand);color:var(--brand-ink);font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{opacity:.92}.btn[disabled]{opacity:.6;cursor:progress}
+.ghost{height:42px;padding:0 16px;border:1px solid var(--line);border-radius:99px;background:none;color:var(--ink);font-weight:500}
+.ghost:hover{border-color:var(--muted)}
+
+/* login */
+.auth{min-height:100dvh;display:grid;place-items:center;padding:24px;background:radial-gradient(800px 380px at 10% 0%,color-mix(in srgb,var(--accent) 24%,transparent),transparent),radial-gradient(800px 420px at 100% 100%,color-mix(in srgb,var(--brand) 18%,transparent),transparent),var(--bg)}
+.acard{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:32px;box-shadow:var(--shadow)}
+.acard h1{font-family:var(--display);font-size:30px;letter-spacing:-.02em;margin:22px 0 4px}
+.lead{margin:0 0 22px;color:var(--muted)}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:18px}
+.roles label{position:relative;text-align:center;padding:10px 6px;font-size:14px;font-weight:500;cursor:pointer;color:var(--muted);border-left:1px solid var(--line)}
+.roles label:first-child{border-left:0}
+.roles input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.roles label:has(input:checked){background:var(--brand);color:var(--brand-ink)}
+.roles label:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:-3px}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.field input[type=email],.field input[type=password],.field input[type=text]{width:100%;height:46px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit}
+.ctl{position:relative}.ctl input{padding-right:70px!important}
+.show{position:absolute;right:6px;top:6px;height:34px;padding:0 10px;border:0;background:none;color:var(--muted);font-size:13px;font-weight:600;border-radius:8px}
+.msg{display:none;color:var(--err);font-size:13px;margin-top:5px}
+.field.bad input{border-color:var(--err)}.field.bad .msg{display:block}
+.remember{display:flex;align-items:center;gap:10px;font-size:14px;margin:0 0 18px;cursor:pointer}
+.remember input{width:18px;height:18px;accent-color:var(--brand)}
+.acard .btn{width:100%;height:48px;font-size:16px}
+#ls{min-height:22px;margin:12px 0 0;font-size:14px;color:var(--err)}
+.demo{margin-top:18px;padding:14px;border-radius:14px;background:var(--bg);font-size:13px;color:var(--muted)}
+.demo b{color:var(--ink)}
+.demo .row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.demo button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:600}
+
+.ok{color:var(--ok)!important}
+@media(max-width:560px){.acard{padding:24px 20px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<section class="auth" id="vLogin">
+  <div class="acard">
+    <div class="brand"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="5" y="4" width="22" height="24" rx="2" stroke="#C79A3B" stroke-width="2.5"/><path d="M11 10h3M18 10h3M11 15h3M18 15h3M13 28v-6h6v6" stroke="#C79A3B" stroke-width="2.5" stroke-linecap="round"/></svg>PropDeal</div>
+    <h1>Sign in</h1>
+    <p class="lead">Browse and list properties. Choose your role to continue.</p>
+    <form id="lf" novalidate>
+      <div class="roles" role="radiogroup" aria-label="Sign in as">
+        <label><input type="radio" name="role" value="seller" checked>Seller</label>
+        <label><input type="radio" name="role" value="buyer">Buyer</label>
+        <label><input type="radio" name="role" value="admin">Admin</label>
+      </div>
+      <div class="field" id="fe1"><label for="em">Email</label><input id="em" type="email" autocomplete="username" placeholder="you@example.com"><div class="msg">Enter a valid email address.</div></div>
+      <div class="field" id="fp1"><label for="pw">Password</label>
+        <div class="ctl"><input id="pw" type="password" autocomplete="current-password"><button type="button" class="show" id="sh" aria-pressed="false">Show</button></div>
+        <div class="msg">Password must be at least 8 characters.</div></div>
+      <label class="remember"><input type="checkbox" id="rem"> Keep me signed in on this device</label>
+      <button class="btn" id="lb" type="submit">Sign in</button>
+      <p id="ls" role="alert"></p>
+    </form>
+    <div class="demo"><b>Demo accounts</b> (for testing)
+      <div class="row"><button type="button" data-r="seller">Use Seller</button><button type="button" data-r="buyer">Use Buyer</button><button type="button" data-r="admin">Use Admin</button></div></div>
+  </div>
+</section>
+
+<script>
+const $=s=>document.querySelector(s);
+// Demo accounts for testing. Replace with a real sign-in API later.
+const USERS={'admin@example.com':['Admin@1234','admin','Demo Admin'],'buyer@example.com':['Buyer@1234','buyer','Demo Buyer'],'seller@example.com':['Seller@1234','seller','Demo Seller']};
+const lf=$('#lf'),em=$('#em'),pw=$('#pw'),ls=$('#ls');
+
+$('#sh').addEventListener('click',function(){const s=pw.type==='text';pw.type=s?'password':'text';this.textContent=s?'Show':'Hide';this.setAttribute('aria-pressed',String(!s))});
+
+document.querySelectorAll('.demo button').forEach(b=>b.addEventListener('click',()=>{
+  const r=b.dataset.r,e=r+'@example.com';em.value=e;pw.value=USERS[e][0];lf.role.value=r;
+  ls.textContent='';ls.className='';$('#fe1').classList.remove('bad');$('#fp1').classList.remove('bad')}));
+
+lf.addEventListener('submit',e=>{
+  e.preventDefault();ls.textContent='';ls.className='';
+  const okE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value.trim()),okP=pw.value.length>=8;
+  $('#fe1').classList.toggle('bad',!okE);$('#fp1').classList.toggle('bad',!okP);
+  if(!okE){em.focus();return}if(!okP){pw.focus();return}
+  const b=$('#lb');b.disabled=true;b.textContent='Signing in…';
+  setTimeout(()=>{
+    b.disabled=false;b.textContent='Sign in';
+    const u=USERS[em.value.trim().toLowerCase()];
+    if(!u||u[0]!==pw.value||u[1]!==lf.role.value){ls.textContent='Email, password or role is incorrect.';return}
+    const sess=JSON.stringify({email:em.value.trim().toLowerCase(),role:u[1],name:u[2]});
+    try{if($('#rem').checked){localStorage.setItem('pd_user',sess)}else{sessionStorage.setItem('pd_user',sess)}}catch{}
+    ls.className='ok';ls.textContent='Welcome, '+u[2]+'! Opening listings…';
+    location.href='index.html'; // index.html opens straight on the listings when you are signed in
+  },450)});
+</script>
+</body>
+</html>
